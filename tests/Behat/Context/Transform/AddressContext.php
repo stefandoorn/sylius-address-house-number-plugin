@@ -64,6 +64,28 @@ final class AddressContext implements Context
     }
 
     /**
+     * @Transform /^address extended (?:as |is |to )"([^"]+)", ([^"]+)", ([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)" for "([^"]+)"$/
+     */
+    public function createNewExtendedAddressWith($city, $street, $number, $addition, $postcode, $countryName, $customerName)
+    {
+        [$firstName, $lastName] = explode(' ', $customerName);
+
+        return $this->exampleAddressFactory->create([
+            'country_code' => $this->countryNameConverter->convertToCode($countryName),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'company' => null,
+            'customer' => null,
+            'phone_number' => null,
+            'city' => $city,
+            'street' => $street,
+            'postcode' => $postcode,
+            'number' => $number,
+            'addition' => $addition,
+        ]);
+    }
+
+    /**
      * @Transform /^clear old (shipping|billing) address$/
      * @Transform /^do not specify any (shipping|billing) address$/
      */

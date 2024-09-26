@@ -45,6 +45,36 @@ final class CheckoutAddressingContext implements Context
     }
 
     /**
+     * @When /^I specify the shipping (address extended as "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+" for "[^"]+")$/
+     */
+    public function iSpecifyTheShippingAddressAs(AddressInterface $address)
+    {
+        $key = sprintf(
+            'shipping_address_%s_%s',
+            strtolower((string) $address->getFirstName()),
+            strtolower((string) $address->getLastName())
+        );
+        $this->sharedStorage->set($key, $address);
+
+        $this->addressPage->specifyShippingAddress($address);
+    }
+
+    /**
+     * @When /^I specify the billing (address extended as "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+", "[^"]+" for "[^"]+")$/
+     */
+    public function iSpecifyTheBillingAddressAs(AddressInterface $address)
+    {
+        $key = sprintf(
+            'billing_address_%s_%s',
+            strtolower((string) $address->getFirstName()),
+            strtolower((string) $address->getLastName())
+        );
+        $this->sharedStorage->set($key, $address);
+
+        $this->addressPage->specifyBillingAddress($address);
+    }
+
+    /**
      * @Then /^I should be notified that the street number in (shipping|billing) details is required$/
      */
     public function iShouldBeNotifiedThatTheStreetNumberShippingDetailsIsRequired($type): void
